@@ -28,6 +28,7 @@ test {
 }
 
 dependencies {
+    implementation 'com.printscript:runner'
     testImplementation 'junit:junit:4.13.1'
 }
 
