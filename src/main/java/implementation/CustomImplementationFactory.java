@@ -44,9 +44,32 @@ public class CustomImplementationFactory implements PrintScriptFactory {
 
     @Override
     public PrintScriptLinter linter() {
-        // your PrintScript linter should be returned here.
-        // make sure to ADAPT your linter to PrintScriptLinter interface.
-        throw new NotImplementedException("Needs implementation"); // TODO: implement
+        return (src, versionStr, config, handler) -> {
+            try {
+                Version version = resolveVersion(versionStr);
+                if (version == null) {
+                    handler.reportError("Unknown version: " + versionStr);
+                    return;
+                }
+                try (Reader srcReader = new InputStreamReader(src, StandardCharsets.UTF_8);
+                     Reader configReader = new InputStreamReader(config, StandardCharsets.UTF_8)) {
+
+                    PrintScriptRunner.INSTANCE.analyze(
+                        srcReader,
+                        version,
+                        configReader,
+                        error -> {
+                            handler.reportError(error.render());
+                            return kotlin.Unit.INSTANCE;
+                        }
+                    );
+                } catch (IOException e) {
+                    handler.reportError("IO Error: " + e.getMessage());
+                }
+            } catch (OutOfMemoryError e) {
+                handler.reportError("Java heap space");
+            }
+        };
     }
 
     private static Version resolveVersion(String versionStr) {
