@@ -8,4 +8,4 @@ This includes a collection of PrintScript files with their expected print result
 - Modify **build.gradle** to include your implementation as a dependency in the project.
 - Return your implementation in [CustomImplementationFactory](src/main/java/implementation/CustomImplementationFactory.java). 
   Make sure to define a adapter of your interpreter to comply with the [PrintScriptInterpreter](src/main/java/interpreter/PrintScriptInterpreter.java) interface.
-- When all tests cases run correctly using ```./gradlew build```, create a pull request to the original repository for a final correction. 
+- When all tests cases run correctly using ```./gradlew build```, create a pull request to the original repository for a final correction.  
